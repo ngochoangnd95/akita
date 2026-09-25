@@ -1,5 +1,9 @@
 # Akita
 
+## Tech stack
+
+React, react-moveable, Selecto, Tiptap and Zustand on the frontend; Nest.js, Prisma, PostgreSQL and MinIO on the backend. See `docs/TECH-STACK.md`.
+
 ## Agent skills
 
 ### Issue tracker
