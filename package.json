@@ -1,0 +1,14 @@
+{
+	"name": "akita",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"check": "pnpm -r run \"/^(lint|format)$/\"",
+		"check:fix": "pnpm -r run \"/^(lint|format):fix$/\""
+	},
+	"devDependencies": {
+		"oxfmt": "^0.70.0",
+		"oxlint": "^1.85.0",
+		"typescript": "catalog:"
+	}
+}

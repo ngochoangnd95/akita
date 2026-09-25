@@ -1,0 +1,6 @@
+{
+	"compilerOptions": {
+		"verbatimModuleSyntax": true,
+		"esModuleInterop": true
+	}
+}

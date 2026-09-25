@@ -1,0 +1,22 @@
+{
+	"name": "@repo/oxc-config",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./oxlint": "./src/oxlint/base.ts",
+		"./oxlint/base": "./src/oxlint/base.ts",
+		"./oxlint/react-vite": "./src/oxlint/react-vite.ts",
+		"./oxfmt": "./src/oxfmt/base.ts",
+		"./oxfmt/base": "./src/oxfmt/base.ts",
+		"./oxfmt/react-vite": "./src/oxfmt/react-vite.ts"
+	},
+	"scripts": {
+		"lint": "oxlint -c ./src/oxlint/base.ts",
+		"lint:fix": "oxlint -c ./src/oxlint/base.ts --fix",
+		"format": "oxfmt -c ./src/oxfmt/base.ts --check",
+		"format:fix": "oxfmt -c ./src/oxfmt/base.ts"
+	},
+	"devDependencies": {
+		"typescript": "catalog:"
+	}
+}
