@@ -2,7 +2,7 @@
 
 ## Tech stack
 
-React, react-moveable, Selecto, Tiptap and Zustand on the frontend; Nest.js, Prisma, PostgreSQL and MinIO on the backend. See `docs/TECH-STACK.md`.
+Bun throughout (runtime, workspaces, tests). Frontend: TanStack Start, shadcn/ui on Base UI, Tailwind CSS, TanStack Store and Form, plus react-moveable, Selecto, Tiptap and Yjs for the editor. Backend: Elysia, Better Auth, Prisma, PostgreSQL and MinIO. See `docs/TECH-STACK.md`.
 
 ## Agent skills
 

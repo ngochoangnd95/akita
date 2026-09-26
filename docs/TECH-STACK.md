@@ -1,25 +1,44 @@
 # Tech stack
 
-## Frontend
+## Tooling
 
 | Concern | Choice |
 |---|---|
-| UI framework | React |
+| Runtime (backend and frontend) | Bun |
+| Package manager and monorepo | Bun workspaces, with a Bun catalog for shared versions |
+| Test runner | `bun test` |
+| Lint and format | Biome (shared config in `packages/biome-config`) |
+| Language | TypeScript |
+
+## Frontend (`apps/akita-web`)
+
+| Concern | Choice |
+|---|---|
+| App framework | TanStack Start (TanStack Router + TanStack Query on Vite) |
+| UI components | shadcn/ui on Base UI primitives |
+| Styling | Tailwind CSS |
+| Global client state | TanStack Store |
+| Forms | TanStack Form |
 | Element move, resize, rotate, snap | react-moveable |
 | Marquee / multi-selection | Selecto |
 | Rich text editing | Tiptap |
-| Client state | Zustand |
+| Live Design state | Yjs (see ADR 0001) |
 
-The editor renders designs as DOM elements (HTML/SVG), not on an HTML canvas.
+The editor renders Designs as DOM elements (HTML/SVG), not on an HTML canvas. The editor route renders on the client only.
 
-## Backend
+TanStack Store holds UI state only (selection, tool, viewport, panels). Design content lives in Yjs.
+
+## Backend (`apps/akita-api`)
 
 | Concern | Choice |
 |---|---|
-| Server framework | Nest.js |
+| Server framework | Elysia on Bun |
+| Authentication | Better Auth |
 | ORM | Prisma |
 | Database | PostgreSQL |
 | Object storage | MinIO (S3-compatible API) |
+
+Elysia also hosts the real-time collaboration WebSocket that syncs each Design's Yjs document.
 
 ## Payments
 
@@ -34,7 +53,7 @@ Mainland China payments are not planned.
 
 ## Rendering
 
-Video export runs on the server, not in the browser, so it works the same on mobile devices.
+Exports and video run on the server, not in the browser, so the result is the same on every device.
 
 ## Background
 

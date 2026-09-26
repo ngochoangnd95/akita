@@ -2,7 +2,12 @@
 	"$schema": "node_modules/@biomejs/biome/configuration_schema.json",
 	"extends": ["@repo/biome-config/base"],
 	"files": {
-		"includes": ["**", "!src/routeTree.gen.ts", "!src/components/ui/*"]
+		"includes": [
+			"**",
+			"!src/routeTree.gen.ts",
+			"!src/paraglide/*",
+			"!src/components/ui/*"
+		]
 	},
 	"css": {
 		"parser": {
