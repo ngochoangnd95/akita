@@ -1,0 +1,17 @@
+{
+	"name": "akita-api",
+	"private": true,
+	"module": "src/index.js",
+	"scripts": {
+		"check": "biome check",
+		"dev": "bun run --watch src/index.ts"
+	},
+	"dependencies": {
+		"elysia": "latest"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@repo/biome-config": "workspace:*",
+		"bun-types": "latest"
+	}
+}
