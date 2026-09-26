@@ -4,10 +4,11 @@
 	"type": "module",
 	"module": "src/index.ts",
 	"scripts": {
+		"build": "bun build src/index.ts --compile --minify-whitespace --minify-syntax --bytecode --target bun --outfile dist/akita-api",
 		"check": "biome check",
 		"check:fix": "biome check --write",
 		"dev": "bun run --watch src/index.ts",
-		"start": "bun src/index.ts",
+		"start": "./dist/akita-api",
 		"test": "bun test",
 		"typecheck": "tsc --noEmit"
 	},
