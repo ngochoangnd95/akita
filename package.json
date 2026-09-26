@@ -31,5 +31,11 @@
 				"version": "^1.4.2"
 			}
 		]
+	},
+	"intent": {
+		"skills": [
+			"@tanstack/*",
+			"dotenv"
+		]
 	}
 }
