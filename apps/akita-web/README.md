@@ -6,18 +6,14 @@ The Akita web app. It server-renders the public pages (home, product, about) and
 
 ## Getting started
 
-Create a `.env` in this folder:
-
-```bash
-PORT=3000
-BETTER_AUTH_URL=http://localhost:3000
-BETTER_AUTH_SECRET=<random 32+ character string>
-```
+Copy `.env.example` to `.env`. The dev server validates it on start (`src/env.ts`) and exits with a list of the missing or invalid variables. Server-only code reads configuration through `getServerEnv()` in `src/env.server.ts`, never `process.env` at module scope.
 
 ```bash
 bun install              # from the repo root
 bun run dev              # dev server with HMR on http://localhost:$PORT
 bun run check            # Biome lint + format check
+bun run typecheck        # compiles Paraglide messages, then tsc
+bun run test             # bun test
 bun run generate-routes  # regenerate src/routeTree.gen.ts
 bun run build            # production build with Nitro, into .output/
 bun run preview          # serve the production build locally
