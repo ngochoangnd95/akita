@@ -1,8 +1,11 @@
 name: CI
 
+# develop: every push runs the pipeline (no deploy).
+# main:    pushes deploy; pull requests into main are accepted only from develop.
 on:
-  pull_request:
   push:
+    branches: [develop, main]
+  pull_request:
     branches: [main]
 
 concurrency:
@@ -10,24 +13,105 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
-    name: Check, typecheck and test
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+    outputs:
+      apps: ${{ steps.changes.outputs.changes }}
+    steps:
+      - name: Only develop may open pull requests into main
+        if: github.event_name == 'pull_request' && github.head_ref != 'develop'
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+        run: |
+          echo "::error::Pull requests into main must come from develop (got '$HEAD_REF')."
+          exit 1
+
+      - uses: actions/checkout@v4
+
+      # Which apps does this change affect? Shared packages and root files affect every app.
+      - id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            akita-api:
+              - 'apps/akita-api/**'
+              - 'packages/**'
+              - 'package.json'
+              - 'bun.lock'
+              - '.github/**'
+            akita-web:
+              - 'apps/akita-web/**'
+              - 'packages/**'
+              - 'package.json'
+              - 'bun.lock'
+              - '.github/**'
+
+  install:
+    name: Install
+    needs: prepare
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
 
-      - uses: oven-sh/setup-bun@v2
+  check:
+    name: Check (Biome + typecheck)
+    needs: install
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: bun run check
+      - run: bun run typecheck
+
+  build:
+    name: Build ${{ matrix.app }}
+    needs: [prepare, check]
+    if: needs.prepare.outputs.apps != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        app: ${{ fromJSON(needs.prepare.outputs.apps) }}
+    env:
+      # Build output of each app, uploaded for the deploy stage.
+      OUTPUT: ${{ fromJSON('{"akita-api":"apps/akita-api/dist","akita-web":"apps/akita-web/.output"}')[matrix.app] }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: bun --filter ${{ matrix.app }} build
+      - uses: actions/upload-artifact@v4
         with:
-          bun-version: 1.4.2
+          name: ${{ matrix.app }}
+          path: ${{ env.OUTPUT }}
+          include-hidden-files: true
+          retention-days: 7
 
-      - name: Install
-        run: bun install --frozen-lockfile
+  test:
+    name: Test
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup
+      - run: bun run test
 
-      - name: Lint and format (Biome)
-        run: bun run check
-
-      - name: Typecheck
-        run: bun run typecheck
-
-      - name: Test
-        run: bun run test
+  deploy:
+    name: Deploy ${{ matrix.app }}
+    needs: [prepare, test]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' && needs.prepare.outputs.apps != '[]'
+    runs-on: ubuntu-latest
+    environment: production-${{ matrix.app }}
+    strategy:
+      matrix:
+        app: ${{ fromJSON(needs.prepare.outputs.apps) }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.app }}
+          path: dist
+      # Each app deploys independently. Replace this step once its hosting is chosen.
+      - name: Deploy
+        run: |
+          echo "No hosting target configured for ${{ matrix.app }} yet."
+          ls -la dist
