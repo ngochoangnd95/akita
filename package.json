@@ -2,13 +2,30 @@
 	"name": "akita",
 	"private": true,
 	"type": "module",
+	"workspaces": {
+		"packages": [
+			"apps/*",
+			"packages/*"
+		],
+		"catalog": {
+			"typescript": "^7.0.2",
+			"@biomejs/biome": "2.5.14"
+		}
+	},
 	"scripts": {
-		"check": "pnpm -r run \"/^(lint|format)$/\"",
-		"check:fix": "pnpm -r run \"/^(lint|format):fix$/\""
+		"check": "bun --workspaces run check"
 	},
 	"devDependencies": {
-		"oxfmt": "^0.70.0",
-		"oxlint": "^1.85.0",
-		"typescript": "catalog:"
+		"@biomejs/biome": "catalog:",
+		"@repo/biome-config": "workspace:*"
+	},
+	"packageManager": "bun",
+	"engines": {
+		"runtime": [
+			{
+				"name": "bun",
+				"version": "^1.4.2"
+			}
+		]
 	}
 }
