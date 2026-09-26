@@ -1,13 +1,8 @@
+import { loadEnvOrExit } from '@repo/utils/env';
 import { Elysia } from 'elysia';
-import { type Env, parseEnv } from './env';
+import { envSchema } from './env';
 
-let env: Env;
-try {
-	env = parseEnv(Bun.env);
-} catch (error) {
-	console.error(error instanceof Error ? error.message : error);
-	process.exit(1);
-}
+const env = loadEnvOrExit(envSchema, Bun.env);
 
 const app = new Elysia().get('/', () => 'Hello Elysia').listen(env.PORT);
 

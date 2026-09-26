@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-const envSchema = z.object({
+/** Configuration read from the environment; documented in `.env.example`. */
+export const envSchema = z.object({
 	PORT: z.coerce.number().int(),
 	WEB_ORIGIN: z.url(),
 	DATABASE_URL: z.url(),
@@ -14,21 +15,3 @@ const envSchema = z.object({
 });
 
 export type Env = z.infer<typeof envSchema>;
-
-export function parseEnv(source: Record<string, string | undefined>): Env {
-	const result = envSchema.safeParse(source);
-	if (result.success) return result.data;
-
-	const lines = result.error.issues.map((issue) => {
-		const name = String(issue.path[0]);
-		return `  - ${name}: ${describeIssue(issue, source[name])}`;
-	});
-	throw new Error(['Invalid environment variables:', ...lines].join('\n'));
-}
-
-function describeIssue(issue: z.core.$ZodIssue, value: string | undefined) {
-	if (value === undefined || value === '') return 'is required';
-	if (issue.code === 'invalid_format' && issue.format === 'url')
-		return 'must be a valid URL';
-	return issue.message;
-}
