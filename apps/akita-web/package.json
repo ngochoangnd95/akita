@@ -3,11 +3,11 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"build": "vite build",
+		"build": "bun --bun vite build",
 		"check": "biome check",
-		"dev": "vite dev",
+		"dev": "bun --bun vite dev",
 		"generate-routes": "tsr generate",
-		"preview": "vite preview"
+		"preview": "bun --bun vite preview"
 	},
 	"dependencies": {
 		"@base-ui/react": "^1.8.0",
