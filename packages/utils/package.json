@@ -1,20 +1,17 @@
 {
-	"name": "akita-api",
+	"name": "@repo/utils",
 	"private": true,
 	"type": "module",
-	"module": "src/index.ts",
+	"exports": {
+		"./env": "./src/env.ts"
+	},
 	"scripts": {
-		"build": "bun build src/index.ts --compile --minify-whitespace --minify-syntax --bytecode --target bun --outfile dist/akita-api",
 		"check": "biome check",
 		"check:fix": "biome check --write",
-		"dev": "bun run --watch src/index.ts",
-		"start": "./dist/akita-api",
 		"test": "bun test",
 		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"@repo/utils": "workspace:*",
-		"elysia": "^1.4.30",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

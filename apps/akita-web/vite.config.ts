@@ -1,4 +1,5 @@
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
+import { loadEnvOrExit } from '@repo/utils/env';
 import babel from '@rolldown/plugin-babel';
 import tailwindcss from '@tailwindcss/vite';
 import { devtools } from '@tanstack/devtools-vite';
@@ -6,21 +7,14 @@ import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import viteReact, { reactCompilerPreset } from '@vitejs/plugin-react';
 import { nitro } from 'nitro/vite';
 import { defineConfig, loadEnv } from 'vite';
-import { parseEnv } from './src/env.ts';
+import { envSchema } from './src/env.ts';
 
 const config = defineConfig(({ mode, command }) => {
 	const env = loadEnv(mode, import.meta.dirname, '');
 
 	// Fail fast when the dev server starts with a missing or invalid .env.
 	// Production servers validate at runtime through `getServerEnv`.
-	if (command === 'serve') {
-		try {
-			parseEnv({ ...process.env, ...env });
-		} catch (error) {
-			console.error(error instanceof Error ? error.message : error);
-			process.exit(1);
-		}
-	}
+	if (command === 'serve') loadEnvOrExit(envSchema, { ...process.env, ...env });
 
 	return {
 		resolve: { tsconfigPaths: true },
