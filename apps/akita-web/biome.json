@@ -1,0 +1,25 @@
+{
+	"$schema": "node_modules/@biomejs/biome/configuration_schema.json",
+	"extends": ["@repo/biome-config/base"],
+	"files": {
+		"includes": ["**", "!src/routeTree.gen.ts", "!src/components/ui/*"]
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
+		}
+	},
+	"linter": {
+		"rules": {
+			"nursery": {
+				"useSortedClasses": {
+					"level": "warn",
+					"fix": "safe",
+					"options": {
+						"functions": ["cn", "cva"]
+					}
+				}
+			}
+		}
+	}
+}
