@@ -1,5 +1,5 @@
 # Local infrastructure for Akita: `docker compose up -d`
-# Values match apps/akita-api/.env.example. Override any of them in a root .env file.
+# Settings and defaults are documented in .env.example (copy it to .env to override).
 name: akita
 
 services:

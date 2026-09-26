@@ -20,6 +20,7 @@ Requirements: [Bun](https://bun.sh) 1.4.2 or later and Docker.
 
 ```bash
 bun install                      # install every workspace
+cp .env.example .env              # optional: override Docker Compose defaults
 docker compose up -d --wait      # PostgreSQL :5432, MinIO :9000 (console :9001), Mailpit :1025 (inbox :8025)
 cp apps/akita-api/.env.example apps/akita-api/.env
 cp apps/akita-web/.env.example apps/akita-web/.env
@@ -31,7 +32,7 @@ bun --filter akita-web dev       # web app on http://localhost:3000
 bun --filter akita-web build     # production build of the web app
 ```
 
-Each app validates its `.env` at startup and exits with a list of missing or invalid variables; `.env.example` documents them. CI (`.github/workflows/ci.yml`) runs check, typecheck and test on pull requests and pushes to `main`. Local MinIO uses the community `pgsty/minio` image because official MinIO images are no longer published. Deployment is described per app. There is no shared deploy pipeline yet.
+Each app validates its `.env` at startup and exits with a list of missing or invalid variables; `.env.example` documents them. CI (`.github/workflows/ci.yml`) runs prepare → install → check (Biome + typecheck) → build → test on every push to `develop` and `main`, and on pull requests into `main`, which must come from `develop`. Build and deploy run per app, only for apps the change touches. Deploy runs on pushes to `main` and is a placeholder until each app's hosting is chosen. Local MinIO uses the community `pgsty/minio` image because official MinIO images are no longer published. Deployment is described per app. There is no shared deploy pipeline yet.
 
 ## Primary tools and concepts
 
