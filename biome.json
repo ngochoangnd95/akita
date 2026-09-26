@@ -2,6 +2,13 @@
 	"$schema": "node_modules/@biomejs/biome/configuration_schema.json",
 	"extends": ["@repo/biome-config/base"],
 	"files": {
-		"includes": ["**", "!apps/*", "!packages/*"]
+		"includes": [
+			"**",
+			"!apps/*",
+			"!packages/*",
+			"!.agents",
+			"!.claude/skills",
+			"!skills-lock.json"
+		]
 	}
 }

@@ -1,17 +1,24 @@
 {
 	"name": "akita-api",
 	"private": true,
-	"module": "src/index.js",
+	"type": "module",
+	"module": "src/index.ts",
 	"scripts": {
 		"check": "biome check",
-		"dev": "bun run --watch src/index.ts"
+		"check:fix": "biome check --write",
+		"dev": "bun run --watch src/index.ts",
+		"start": "bun src/index.ts",
+		"test": "bun test",
+		"typecheck": "tsc --noEmit"
 	},
 	"dependencies": {
-		"elysia": "latest"
+		"elysia": "^1.4.30",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@repo/biome-config": "workspace:*",
-		"bun-types": "latest"
+		"bun-types": "catalog:",
+		"typescript": "catalog:"
 	}
 }

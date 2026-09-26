@@ -9,8 +9,11 @@ export default function ParaglideLocaleSwitcher() {
 	const currentLocale = getLocale();
 
 	return (
-		<div
+		<fieldset
 			style={{
+				border: 0,
+				margin: 0,
+				padding: 0,
 				display: 'flex',
 				gap: '0.5rem',
 				alignItems: 'center',
@@ -24,6 +27,7 @@ export default function ParaglideLocaleSwitcher() {
 			<div style={{ display: 'flex', gap: '0.25rem' }}>
 				{locales.map((locale) => (
 					<button
+						type="button"
 						key={locale}
 						onClick={() => setLocale(locale)}
 						aria-pressed={locale === currentLocale}
@@ -42,6 +46,6 @@ export default function ParaglideLocaleSwitcher() {
 					</button>
 				))}
 			</div>
-		</div>
+		</fieldset>
 	);
 }
