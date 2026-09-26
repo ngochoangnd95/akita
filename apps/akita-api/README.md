@@ -6,18 +6,14 @@ The Akita backend, a single Elysia process on Bun. It serves the REST API, hosts
 
 ## Getting started
 
-Create a `.env` in this folder:
-
-```bash
-PORT=4000
-```
-
-More variables (database, MinIO, auth, mail) arrive with issues #34–#36 and are validated at startup in `src/env.ts`.
+Start the local services from the repo root with `docker compose up -d --wait`, then copy `.env.example` to `.env`. The defaults match compose. `src/env.ts` validates every variable at startup and exits with a list of the missing or invalid ones.
 
 ```bash
 bun install      # from the repo root
 bun run dev      # start with file watching on http://localhost:$PORT
 bun run check    # Biome lint + format check
+bun run typecheck
+bun run test     # bun test
 ```
 
 **Build and deploy:** there is no build step yet, because Bun runs the TypeScript directly. For production, run `bun src/index.ts`, or bundle it with `bun build src/index.ts --target bun --outdir dist` or compile a single binary with `bun build --compile`. Ship it in a Bun container next to PostgreSQL and MinIO. Run database migrations (`bunx prisma migrate deploy`) before starting a new version, never on startup.

@@ -63,6 +63,7 @@
         "@types/react-dom": "catalog:",
         "@vitejs/plugin-react": "^6.1.1",
         "babel-plugin-react-compiler": "^1.0.0",
+        "bun-types": "catalog:",
         "typescript": "catalog:",
         "vite": "^8.3.1",
       },

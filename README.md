@@ -16,17 +16,22 @@ More packages are planned: `contracts`, `utils`, `design-model`, `design-rendere
 
 ## Getting started
 
-Requirements: [Bun](https://bun.sh) 1.4.2 or later. Docker is needed later for PostgreSQL, MinIO and Mailpit (issue #34).
+Requirements: [Bun](https://bun.sh) 1.4.2 or later and Docker.
 
 ```bash
 bun install                      # install every workspace
+docker compose up -d --wait      # PostgreSQL :5432, MinIO :9000 (console :9001), Mailpit :1025 (inbox :8025)
+cp apps/akita-api/.env.example apps/akita-api/.env
+cp apps/akita-web/.env.example apps/akita-web/.env
 bun run check                    # Biome lint + format check in every workspace
+bun run typecheck                # TypeScript in every workspace
+bun run test                     # bun test across the repo
 bun --filter akita-api dev       # API on http://localhost:$PORT
 bun --filter akita-web dev       # web app on http://localhost:3000
 bun --filter akita-web build     # production build of the web app
 ```
 
-Each app needs a `.env`; see its README. Deployment is described per app. There is no shared deploy pipeline yet.
+Each app validates its `.env` at startup and exits with a list of missing or invalid variables; `.env.example` documents them. CI (`.github/workflows/ci.yml`) runs check, typecheck and test on pull requests and pushes to `main`. Local MinIO uses the community `pgsty/minio` image because official MinIO images are no longer published. Deployment is described per app. There is no shared deploy pipeline yet.
 
 ## Primary tools and concepts
 

@@ -1,16 +1,12 @@
 import { z } from 'zod';
 
+// Server-side configuration. Never read it at module scope in isomorphic code:
+// call `getServerEnv` from `env.server.ts` inside server-only code instead.
 const envSchema = z.object({
 	PORT: z.coerce.number().int(),
-	WEB_ORIGIN: z.url(),
-	DATABASE_URL: z.url(),
-	S3_ENDPOINT: z.url(),
-	S3_REGION: z.string(),
-	S3_ACCESS_KEY_ID: z.string(),
-	S3_SECRET_ACCESS_KEY: z.string(),
-	S3_BUCKET: z.string(),
-	SMTP_URL: z.url(),
-	MAIL_FROM: z.string(),
+	API_URL: z.url(),
+	BETTER_AUTH_URL: z.url(),
+	BETTER_AUTH_SECRET: z.string().min(32),
 });
 
 export type Env = z.infer<typeof envSchema>;
@@ -30,5 +26,7 @@ function describeIssue(issue: z.core.$ZodIssue, value: string | undefined) {
 	if (value === undefined || value === '') return 'is required';
 	if (issue.code === 'invalid_format' && issue.format === 'url')
 		return 'must be a valid URL';
+	if (issue.code === 'too_small' && issue.origin === 'string')
+		return `must be at least ${issue.minimum} characters`;
 	return issue.message;
 }

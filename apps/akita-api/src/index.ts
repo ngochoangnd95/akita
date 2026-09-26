@@ -1,8 +1,14 @@
 import { Elysia } from 'elysia';
-import { env } from './env';
+import { type Env, parseEnv } from './env';
+
+let env: Env;
+try {
+	env = parseEnv(Bun.env);
+} catch (error) {
+	console.error(error instanceof Error ? error.message : error);
+	process.exit(1);
+}
 
 const app = new Elysia().get('/', () => 'Hello Elysia').listen(env.PORT);
 
-console.log(
-	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
-);
+console.log(`Akita API running at ${app.server?.url}`);
