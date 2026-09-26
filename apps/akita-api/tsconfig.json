@@ -1,0 +1,25 @@
+/* Visit https://aka.ms/tsconfig to read more about this file */
+{
+	"compilerOptions": {
+		/* Language and Environment */
+		"target": "ES2021",
+
+		/* Modules */
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"paths": {
+			"~/*": ["./src/*"]
+		},
+		"types": ["bun-types"],
+
+		/* Interop Constraints */
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+
+		/* Type Checking */
+		"strict": true,
+
+		/* Completeness */
+		"skipLibCheck": true
+	}
+}
