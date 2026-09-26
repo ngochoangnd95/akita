@@ -1,0 +1,11 @@
+{
+	"name": "@repo/biome-config",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./base": "./configs/base.json"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:"
+	}
+}
