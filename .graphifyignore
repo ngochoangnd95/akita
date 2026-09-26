@@ -1,0 +1,16 @@
+# Config files: graphify parses JSON key-by-key, which floods the graph
+# with nodes like `compilerOptions`, `$schema` and `dependencies`.
+**/package.json
+**/tsconfig.json
+**/biome.json
+**/components.json
+**/tsr.config.json
+**/.cta.json
+packages/biome-config/configs/*.json
+
+# Agent tooling: hooks, rules and the project copy of the graphify skill
+.claude/
+
+# i18n message catalogs and inlang project settings
+apps/akita-web/messages/*.json
+apps/akita-web/project.inlang/settings.json
